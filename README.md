@@ -6,7 +6,6 @@ This project aims to develop a machine learning model to calibrate weather measu
 
 ### Approach:
 
-Training ML Algorithm: We will train a machine learning model, possibly a classification algorithm, using a dataset comprising atmospheric data and corresponding contrail observations derived from sky images.
+Training ML Algorithm: We will train a machine learning model, possibly a classification algorithm <bk>
 Features: The input features for the model will include atmospheric variables such as temperature, humidity, altitude/pressure, obtained from reliable measurement and forecast sources.
 Target Variable: The target variable will represent the presence or absence of contrails in the sky, derived from sky images.
-Model Evaluation: We will assess the performance of the trained model using appropriate evaluation metrics, ensuring it accurately predicts contrail presence/absence based on the provided atmospheric data and sky images.
