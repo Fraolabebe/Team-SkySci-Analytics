@@ -18,7 +18,7 @@ This script is used to clean and manipulate the SkyConditionData from a CSV file
 1. Make sure you have Python installed.
 2. Install the required dependencies by running `pip install pandas numpy`.
 3. Place the input CSV file 'SkyConditionData_raw.csv' in the same directory as the script.
-4. Run the script by executing `python sky_condition_cleaning_script.py`.
+4. Run the script by executing `python SkyConditionData_Transform.py`.
 5. After execution, the cleaned data will be saved in the file 'SkyConditionData_cleaned.csv'.
 
 Please note that the script assumes the input CSV file follows the specified format, and the required columns are present. Adjustments may be needed for different data formats.
