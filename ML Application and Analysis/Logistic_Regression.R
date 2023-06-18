@@ -3,8 +3,9 @@ library(dplyr)
 library(tidyr)
 library(readr)
 
-# Set the working directory
-setwd("C://Dev//Team-SkySci-Analytics//ML Application and Analysis")
+# NOTE: Set to your working directory
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+print(paste("Current Working Directory: ",getwd()), sep="\n")
 
 # Load the dataset
 dataset <- read_csv("ground_weather_merged.csv")
@@ -85,5 +86,93 @@ df$Image <- factor(df$Image)
 confusion_matrix <- confusionMatrix(predicted_classes, df$Image)
 
 # Print the confusion matrix
-print(confusion_matrix)
+confusion_matrix
+#-------------------------------------------------------------------------------
+# VISUALIZATIONS
+#-------------------------------------------------------------------------------
+# Default Visual
+library(pROC)
+roc_obj <- roc(df$Image, predictions)
+plot(roc_obj, main = "Receiver Operating Characteristic (ROC) Curve")
 
+pr_obj <- roc(df$Image, predictions, direction = "<")
+plot(pr_obj, main = "Precision-Recall Curve")
+
+# Error: Unable to load package rms on my linux box
+install.packages("rms")
+library(rms)
+calibration_plot <- calibration(predictions, df$Image, method = "bins")
+plot(calibration_plot, main = "Calibration Plot")
+#-------------------------------------------------------------------------------
+# ggPlot  Visual
+library(pROC)
+library(ggplot2)
+
+# ROC Curve
+roc_obj <- roc(df$Image, predictions)
+
+roc_data <- data.frame(
+  "FPR" = roc_obj$specificities,
+  "TPR" = roc_obj$sensitivities
+)
+
+roc_plot <- ggplot(roc_data, aes(x = FPR, y = TPR)) +
+  geom_line() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(x = "False Positive Rate", y = "True Positive Rate") +
+  ggtitle("Receiver Operating Characteristic (ROC) Curve")
+
+roc_plot
+
+#========================================
+# Precision Recall Visualization
+# Precision: measures the accuracy of positive predictions made by a model
+# Precision = True Positives / (True Positives + False Positives)
+# Recall: measures ability of a model to identify positive instances correctly
+# Recall = True Positives / (True Positives + False Negatives)
+#========================================
+pr_obj <- roc(df$Image, predictions, direction = "<")
+
+# Calculate Precision
+pr_data <- data.frame(
+  "Recall" = pr_obj$sensitivities,
+  "Specificity" = pr_obj$specificities
+)
+
+pr_data$Precision <- with(pr_data, Recall / (Recall + (1 - Specificity)))
+
+# Filter out rows with missing values
+pr_data <- pr_data[complete.cases(pr_data), ]
+
+pr_plot <- ggplot(pr_data, aes(x = Recall, y = Precision)) +
+  geom_line() +
+  labs(x = "Recall", y = "Precision") +
+  ggtitle("Precision-Recall Curve")
+
+pr_plot
+
+# Heatmap of Original Dataset w/targeted attributes
+library(ggplot2)
+# Calculate correlation matrix
+numeric_df <- df[, sapply(df, is.numeric)]
+cor_matrix <- cor(numeric_df)
+
+# Convert correlation matrix to long format
+cor_data <- reshape2::melt(cor_matrix)
+
+# Create correlation heatmap using ggplot2
+heatmap_plot <- ggplot(cor_data, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "red") +
+  labs(x = "Variable 1", y = "Variable 2", title = "Correlation Heatmap") +
+  geom_text(aes(label = round(value, 2)), color = "black", size = 3)
+
+heatmap_plot
+
+#===============================================================================
+# Display Outputs
+#===============================================================================
+heatmap_plot
+confusion_matrix
+roc_plot
+pr_plot
