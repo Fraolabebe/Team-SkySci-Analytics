@@ -1,7 +1,7 @@
 #!/bin/bash
 # Define the start and end dates
 start_date="20220901"
-end_date="20221222"
+end_date="20221223"
 
 # Convert the start and end dates to timestamps
 start_timestamp=$(date -d "$start_date" +%s)
