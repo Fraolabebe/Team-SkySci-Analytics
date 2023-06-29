@@ -176,3 +176,32 @@ heatmap_plot
 confusion_matrix
 roc_plot
 pr_plot
+
+#===============================================================================
+
+# Fit the logistic regression model and get the coefficients
+model <- glm(Image ~ ., data = df, family = "binomial")
+coefficients <- coef(model)
+sorted_coefficients <- sort(abs(coefficients), decreasing = TRUE)
+
+# Variables with larger absolute coefficients have a stronger influence
+# on the prediction
+print(`sorted_coefficients`)
+
+# Remove the intercept coefficient
+predictor_coef <- sorted_coefficients[-1]
+coef_data <- data.frame(Variable = names(predictor_coef), Coefficient = predictor_coef)
+
+
+# Sort the coefficients by their absolute values for easier interpretation
+coef_data <- coef_data[order(abs(coef_data$Coefficient), decreasing = TRUE), ]
+
+coef_plot <- ggplot(coef_data, aes(x = Variable, y = Coefficient, fill = Coefficient > 0.4999)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(x = "Predictor Variable", y = "Coefficient Magnitude", title = "Comparison of Coefficients") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = c("coral", "forestgreen"), labels = c("Minority", "Majority"), guide = guide_legend(reverse = TRUE)) +
+  coord_cartesian(ylim = c(0.0, 1.0))
+
+# Display the bar plot
+coef_plot
