@@ -1,3 +1,34 @@
+https://www.ncei.noaa.gov/products/weather-climate-models/rapid-refresh-update
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+________________________________________________________________________________________________________________________________
 Repo: https://github.com/jasper-software/jasper
 
 1. Visit the Jasper project page on GitHub: https://github.com/jasper-software/jasper
