@@ -7,7 +7,7 @@ library(readr)
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ",getwd()), sep="\n")
 
-# Load the datas`et
+# Load the dataset
 df <- read_csv("ground_weather_preprocessed.csv")
 
 # Split the dataset into predictors (X) and the target variable (y)
