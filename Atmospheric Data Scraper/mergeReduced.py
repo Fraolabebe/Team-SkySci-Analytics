@@ -40,7 +40,7 @@ for csv_file in csv_files:
 merged_data = merged_data.sort_values('Timestamp')
 
 # Reorganize the column order
-column_order = ['Timestamp', 'Latitude', 'Longitude', 'Temperature', 'Humidity', 'Pressure']
+column_order = ['Timestamp', 'Latitude', 'Longitude', 'Temperature', 'Humidity', 'Pressure', 'Dew Point Temperature']
 merged_data = merged_data[column_order]
 
 # Save the merged data to the master CSV file
