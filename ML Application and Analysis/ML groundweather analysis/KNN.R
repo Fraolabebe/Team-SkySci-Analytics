@@ -73,7 +73,8 @@ plot(roc_data, print.thres = "best", print.auc = TRUE, grid = TRUE)
 
 # Plot ROC curve
 ggroc(roc_data) +
-  labs(title = "Receiver Operating Characteristic (ROC) Curve - KNN Classifier")
+  labs(title = "Receiver Operating Characteristic (ROC) Curve - KNN Classifier",
+       subtitle="Ground Weather Data")
 
 
 #-------------------------------------------------------------------------------

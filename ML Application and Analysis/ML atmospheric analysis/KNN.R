@@ -10,10 +10,14 @@ library(class)
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ", getwd()), sep = "\n")
 
-# Load the dataset
+#-------------------------------------------------------------------------------
+# Load target dataset
 # df <- read_csv("ground_weather_preprocessed.csv")
-# df <- read_csv("ground_weather_preprocessed.csv")
-df <- read_csv("clearsky_atmospheric_weather_preprocessed.csv")
+# plot.subtitle <- "Ground Weather Data"
+
+df <- read_csv("atmospheric_weather_preprocessed.csv")
+plot.subtitle <- "Atmospheric Weather Data (20KM)"
+#-------------------------------------------------------------------------------
 
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
@@ -31,7 +35,7 @@ train_data <- df[train_indices, ]
 test_data <- df[-train_indices, ]
 
 # Train the KNN classifier model
-k <- 3  # Number of nearest neighbors to consider
+k <- 5   # Number of nearest neighbors to consider
 model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
              test_data[, -which(names(test_data) == target_variable_column)],
              train_data[[target_variable_column]],
@@ -41,6 +45,7 @@ model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
 accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
 print(paste("Accuracy:", accuracy))
 
+plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
 #-------------------------------------------------------------------------------
 # Load required library
 library(pROC)
@@ -74,9 +79,83 @@ roc_data <- roc(test_data[[target_variable_column]], as.numeric(model))
 plot(roc_data, print.thres = "best", print.auc = TRUE, grid = TRUE)
 
 # Plot ROC curve
-ggroc(roc_data) +
+knn.roc.plot <- ggroc(roc_data) +
   labs(title = "Receiver Operating Characteristic (ROC) Curve - KNN Classifier",
-       subtitle = "Atmospheric Data 20KM")
-
+       subtitle = plot.subtitle)
+knn.roc.plot
 
 #-------------------------------------------------------------------------------
+library(class)
+library(cluster)
+library(ggplot2)
+library(factoextra)
+
+# Create a function to calculate the total within-cluster sum of squares (WSS)
+calculate_wss <- function(data, k) {
+  kmeans_model <- kmeans(data, centers = k, nstart = 10)
+  wss <- sum(kmeans_model$withinss)
+  return(wss)
+}
+
+# Generate some sample data with 3 groups
+set.seed(42)
+data <- matrix(rnorm(300), ncol = 2)
+labels <- sample(1:3, size = 100, replace = TRUE)
+colors <- c("red", "blue", "green")
+df <- data.frame(data, label = factor(labels))
+
+# Calculate WSS for different values of k
+wss_values <- sapply(2:10, function(k) calculate_wss(data, k))
+
+# Create a data frame for the elbow plot
+elbow_df <- data.frame(k = 2:10, wss = wss_values)
+
+# Create the elbow plot using ggplot2
+elbow_plot <- ggplot(elbow_df, aes(x = k, y = wss)) +
+  geom_line() +
+  geom_point(shape = 19) +
+  xlab("Number of clusters (k)") +
+  ylab("Total Within-cluster Sum of Squares (WSS)") +
+  theme_minimal() +
+  labs(title = "Elbow Plot for KNN Classifier",
+       subtitle = "Optimal Number of Clusters Selection") +
+  geom_vline(xintercept = 5, linetype = "dashed", color = "red") +
+  annotate("text", x = elbow_point + 0.2, y = max(wss_values),
+           label = paste("Elbow at k =", elbow_point), hjust = 0) +
+  scale_x_continuous(breaks = seq(2, 10, by = 1))
+
+# Display the elbow plot
+print(elbow_plot)
+#===============================================================================
+library(pROC)
+library(ggplot2)
+
+# Compute ROC curve using pROC
+roc_data <- roc(response, predictor)
+
+# Extract ROC curve data
+roc_df <- data.frame(1 - roc_data$specificities, roc_data$sensitivities)
+
+# Create the ROC plot using ggplot2
+roc_plot <- ggplot(roc_df, aes(x = X1...roc_data.specificities, y = roc_data$sensitivities)) +
+  geom_path() +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  xlab("False Positive Rate") +
+  ylab("True Positive Rate") +
+  labs(title = "K-Nearest Neighbors Receiver Operating Characteristic (ROC) Curve",
+       subtitle = plot.subtitle) +
+  theme_minimal()
+
+# Display the ROC plot
+roc_plot
+#===============================================================================
+# Visualization quick grab
+confusion_matrix
+print(paste("Sensitivity:", sensitivity,
+            "Specificity:", specificity,
+            "Precision:", precision,
+            "Accuracy:", accuracy))
+#knn.roc.plot
+roc_plot
+elbow_plot
+

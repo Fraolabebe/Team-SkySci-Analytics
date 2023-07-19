@@ -59,4 +59,9 @@ df <- select(dataset,
 # Handle missing values
 df <- na.omit(df)
 
+# Normalize all values between 0 & 1 for each set
+df$temperature <- df$temperature / max(df$temperature)
+df$humidity <- df$humidity / max(df$humidity)
+df$pressure <- df$pressure / max(df$pressure)
+
 write.csv(df, "atmospheric_weather_preprocessed.csv", row.names=FALSE)

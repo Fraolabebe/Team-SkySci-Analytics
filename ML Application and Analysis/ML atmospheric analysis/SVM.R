@@ -16,9 +16,15 @@ library(e1071)
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ",getwd()), sep="\n")
 
-# Load the datas`et
-#df <- read_csv("ground_weather_preprocessed.csv")
+#===============================================================================
+# Load the dataset
+# df <- read_csv("ground_weather_preprocessed.csv")
+# plot.subtitle <- "Ground Weather Data"
+
 df <- read_csv("atmospheric_weather_preprocessed.csv")
+plot.subtitle <- "Atmospheric Weather Data (20KM)"
+#===============================================================================
+
 
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
@@ -76,6 +82,7 @@ ggplot() +
   theme_minimal()
 
 #-------------------------------------------------------------------------------
+# ROC Curve visualization
 library(ROCR)
 # Create prediction object
 pred <- prediction(predictions, test_data$image)
@@ -83,4 +90,82 @@ pred <- prediction(predictions, test_data$image)
 perf <- performance(pred, "tpr", "fpr")
 # Plot the ROC curve
 plot(perf, main = "ROC Curve for SVM Model", xlab = "False Positive Rate", ylab = "True Positive Rate")
+#-------------------------------------------------------------------------------
+# Kernel Selection Visualization
+library(pROC)
+library(ggplot2)
+
+# Define the kernel types you want to compare
+kernel_types <- c("linear", "radial", "polynomial", "sigmoid")
+
+# Function to fit SVM models with different kernels and calculate ROC curves
+fit_svm_model <- function(kernel_type) {
+  svm_model <- svm(image ~ ., data = train_data, 
+                   kernel = kernel_type,
+                   cost = 1,
+                   gamma = 0.1,
+                   degree = 3)
+  
+  # Predict probabilities for the test data
+  probabilities <- predict(svm_model, newdata = test_data, probability = TRUE)
+  
+  # Calculate the ROC curve
+  roc_obj <- roc(test_data$image, probabilities)
+  
+  # Return the ROC curve object
+  roc_obj
+}
+
+# Fit SVM models with different kernels and calculate ROC curves
+roc_curves <- lapply(kernel_types, fit_svm_model)
+
+# Combine the ROC curves into a data frame
+roc_data <- do.call(rbind, lapply(seq_along(kernel_types), function(i) {
+  data.frame(kernel = kernel_types[i],
+             fpr = roc_curves[[i]]$specificities,
+             tpr = roc_curves[[i]]$sensitivities)
+}))
+
+# Plot the ROC curves
+ggplot(roc_data, aes(x = fpr, y = tpr, color = kernel)) +
+  geom_line() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(x = "False Positive Rate", y = "True Positive Rate", color = "Kernel Type") +
+  theme_minimal()
+
+# Plot the ROC curves
+ggplot(roc_data, aes(x = fpr, y = tpr, color = kernel)) +
+  geom_line() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(x = "False Positive Rate", y = "True Positive Rate", color = "Kernel Type") +
+  theme_minimal()
+
+
+# Plot the ROC curves with adjusted visual
+ggplot(roc_data, aes(x = fpr, y = tpr, color = kernel)) +
+  geom_path() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(x = "False Positive Rate", y = "True Positive Rate", color = "Kernel Type") +
+  theme_minimal() +
+  xlim(0, 1) +
+  ylim(0, 1)
+
+# Invert the FPR values
+roc_data$fpr_inverted <- 1 - roc_data$fpr
+
+# Plot the ROC curves with inverted FPR and title/subtitle
+ggplot(roc_data, aes(x = fpr_inverted, y = tpr, color = kernel)) +
+  geom_path() +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  labs(x = "False Positive Rate", y = "True Positive Rate", color = "Kernel Type",
+       title = "SVM Kernel Comparison Receiver Operating Characteristic (ROC) Curves",
+       subtitle = plot.subtitle) +
+  theme_minimal() +
+  xlim(0, 1) +
+  ylim(0, 1)
+
+
+#-------------------------------------------------------------------------------
+# Decision Boundary Visualization
+
 #-------------------------------------------------------------------------------
