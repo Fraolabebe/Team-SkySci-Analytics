@@ -26,6 +26,8 @@ plot.subtitle <- "Atmospheric Weather Data (20KM)"
 #===============================================================================
 
 
+
+
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
 X <- select(df, -target_variable_column)

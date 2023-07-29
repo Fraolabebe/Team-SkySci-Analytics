@@ -8,8 +8,8 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ",getwd()), sep="\n")
 
 # Load the dataset
-df <- read_csv("ground_weather_preprocessed.csv")
-# df <- read_csv("atmospheric_weather_preprocessed.csv")
+# df <- read_csv("ground_weather_preprocessed.csv")
+df <- read_csv("atmospheric_weather_preprocessed.csv")
 
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
@@ -181,6 +181,6 @@ library(pROC)
 # model <- glm(image ~ ., data = df, family = "binomial")
 predicted_prob <- predict(model, type = "response")
 roc_obj <- roc(df$image, predicted_prob)
-plot(roc_obj, main = "Groundweather Data ROC Curve", xlab = "False Positive Rate", ylab = "True Positive Rate")
+plot(roc_obj, main = "Atmospheric Data ROC Curve (Logistic Regression)", xlab = "False Positive Rate", ylab = "True Positive Rate")
 
 

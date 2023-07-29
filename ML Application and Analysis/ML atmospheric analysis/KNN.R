@@ -35,7 +35,7 @@ train_data <- df[train_indices, ]
 test_data <- df[-train_indices, ]
 
 # Train the KNN classifier model
-k <- 5   # Number of nearest neighbors to consider
+k <- 4   # Number of nearest neighbors to consider
 model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
              test_data[, -which(names(test_data) == target_variable_column)],
              train_data[[target_variable_column]],
@@ -119,9 +119,9 @@ elbow_plot <- ggplot(elbow_df, aes(x = k, y = wss)) +
   theme_minimal() +
   labs(title = "Elbow Plot for KNN Classifier",
        subtitle = "Optimal Number of Clusters Selection") +
-  geom_vline(xintercept = 5, linetype = "dashed", color = "red") +
-  annotate("text", x = elbow_point + 0.2, y = max(wss_values),
-           label = paste("Elbow at k =", elbow_point), hjust = 0) +
+  geom_vline(xintercept = k, linetype = "dashed", color = "red") +
+  annotate("text", x = 2 + 0.2, y = max(wss_values),
+           label = paste("Elbow at k =", k), hjust = 0) +
   scale_x_continuous(breaks = seq(2, 10, by = 1))
 
 # Display the elbow plot
@@ -159,3 +159,4 @@ print(paste("Sensitivity:", sensitivity,
 roc_plot
 elbow_plot
 
+#===============================================================================
