@@ -6,7 +6,7 @@ library(class)
 
 #-------------------------------------------------------------------------------
 
-# NOTE: Set to your working directory
+# NOTE: Set to your working directory 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ", getwd()), sep = "\n")
 
@@ -23,6 +23,11 @@ filtered_df <- df %>%
   filter(pressure == 200 | (pressure != 200 & image == 1))
 
 df <- filtered_df %>% select(-pressure)
+
+#-------------------------------------------------------------------------------
+# Ground Weather Swap IN
+df <- read_csv("ground_weather_preprocessed.csv")
+plot.subtitle <- "Ground Weather Data"
 
 #-------------------------------------------------------------------------------
 
@@ -85,14 +90,19 @@ p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
 # Calculate Cohen's Kappa
 kappa <- (observed_agreement - p_chance) / (1 - p_chance)
 
-# Print the results
-print("Confusion Matrix:")
-print(confusion_matrix)
+# Calculate McNemar's test
+mcnemar_test <- mcnemar.test(confusion_matrix)
+
+# Extract the p-value from McNemar's test result
+p_value_mcnemar <- mcnemar_test$p.value
+
+# Print the results, including the p-value for McNemar's test
+print(paste("Accuracy:", accuracy))
+print(paste("Cohen's Kappa:", kappa))
+print(paste("McNemar's Test p-value:", p_value_mcnemar))
 print(paste("Sensitivity:", sensitivity))
 print(paste("Specificity:", specificity))
 print(paste("Precision:", precision))
-print(paste("Accuracy:", accuracy))
-print(paste("Cohen's Kappa:", kappa))
 
 #===============================================================================
 
@@ -119,7 +129,8 @@ ggplot() +
             aes(x = Var1, y = Var2, fill = Freq), color = "black") +
   geom_text(data = as.data.frame.table(confusion_matrix),
             aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
-  labs(x = "Actual", y = "Predicted", fill = "Frequency", title = "Confusion Matrix - KNN Model") +
+  labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+       title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
   scale_fill_gradient(low = "white", high = "forestgreen") +
   theme_minimal()
 #-------------------------------------------------------------------------------
@@ -198,3 +209,16 @@ roc_plot
 elbow_plot
 
 #===============================================================================
+install.packages("pROC")
+library(class)
+library(pROC)# Assuming the class labels are binary (0 and 1) in this example
+library(ggplot2)
+# Assuming the class labels are binary (0 and 1) in this example
+# We'll use the predicted class labels to calculate the ROC curve
+roc_curve <- roc(test_data$image, as.numeric(model) - 1)
+
+# Calculate AUC
+auc_score <- auc(roc_curve)
+
+# Plot the ROC curve
+plot(roc_curve, main = paste("KNN (k=4) ROC Curve ~ AUC =", round(auc_score, 3)))
