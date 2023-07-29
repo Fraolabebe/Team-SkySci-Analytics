@@ -18,6 +18,13 @@ print(paste("Current Working Directory: ", getwd()), sep = "\n")
 df <- read_csv("atmospheric_weather_preprocessed.csv")
 plot.subtitle <- "Atmospheric Weather Data (20KM)"
 #-------------------------------------------------------------------------------
+# Filter the DataFrame to include rows with pressure == 200 or (pressure != 200 and image == 1)
+filtered_df <- df %>%
+  filter(pressure == 200 | (pressure != 200 & image == 1))
+
+df <- filtered_df %>% select(-pressure)
+
+#-------------------------------------------------------------------------------
 
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
@@ -54,8 +61,6 @@ library(ggplot2)
 #-------------------------------------------------------------------------------
 # Calculate the confusion matrix
 confusion_matrix <- table(model, test_data[[target_variable_column]])
-print("Confusion Matrix:")
-print(confusion_matrix)
 
 # Calculate True Positive, True Negative, False Positive, and False Negative
 tp <- confusion_matrix[2, 2]
@@ -69,10 +74,27 @@ specificity <- tn / (tn + fp)
 precision <- tp / (tp + fp)
 accuracy <- (tp + tn) / sum(confusion_matrix)
 
-print(paste("Sensitivity:", sensitivity,
-            "Specificity:", specificity,
-            "Precision:", precision,
-            "Accuracy:", accuracy))
+# Calculate the overall observed agreement
+observed_agreement <- accuracy
+
+# Calculate the probability of agreement by chance
+p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
+               sum(confusion_matrix[2,]) * sum(confusion_matrix[,2])) /
+  sum(confusion_matrix)^2
+
+# Calculate Cohen's Kappa
+kappa <- (observed_agreement - p_chance) / (1 - p_chance)
+
+# Print the results
+print("Confusion Matrix:")
+print(confusion_matrix)
+print(paste("Sensitivity:", sensitivity))
+print(paste("Specificity:", specificity))
+print(paste("Precision:", precision))
+print(paste("Accuracy:", accuracy))
+print(paste("Cohen's Kappa:", kappa))
+
+#===============================================================================
 
 # Create ROC curve
 roc_data <- roc(test_data[[target_variable_column]], as.numeric(model))
@@ -84,6 +106,22 @@ knn.roc.plot <- ggroc(roc_data) +
        subtitle = plot.subtitle)
 knn.roc.plot
 
+#-------------------------------------------------------------------------------
+# Create a dataframe with the actual and predicted values
+results <- data.frame(Actual = test_data$image, Predicted = model)
+
+# Confusion matrix plot
+confusion_matrix <- table(results$Actual, results$Predicted)
+
+# Plot the confusion matrix
+ggplot() +
+  geom_tile(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+  geom_text(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+  labs(x = "Actual", y = "Predicted", fill = "Frequency", title = "Confusion Matrix - KNN Model") +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  theme_minimal()
 #-------------------------------------------------------------------------------
 library(class)
 library(cluster)
