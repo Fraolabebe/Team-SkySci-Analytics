@@ -5,16 +5,11 @@ library(readr)
 library(class)
 
 #-------------------------------------------------------------------------------
-
 # NOTE: Set to your working directory 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 print(paste("Current Working Directory: ", getwd()), sep = "\n")
-
 #-------------------------------------------------------------------------------
-# Load target dataset
-# df <- read_csv("ground_weather_preprocessed.csv")
-# plot.subtitle <- "Ground Weather Data"
-
+# Load Dataset
 df <- read_csv("atmospheric_weather_preprocessed.csv")
 plot.subtitle <- "Atmospheric Weather Data (20KM)"
 #-------------------------------------------------------------------------------
@@ -25,12 +20,6 @@ filtered_df <- df %>%
 df <- filtered_df %>% select(-pressure)
 
 #-------------------------------------------------------------------------------
-# Ground Weather Swap IN
-df <- read_csv("ground_weather_preprocessed.csv")
-plot.subtitle <- "Ground Weather Data"
-
-#-------------------------------------------------------------------------------
-
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
 X <- select(df, -target_variable_column)

@@ -53,12 +53,13 @@ library(stringr)
 #===============================================================================
 # Assuming `df` is your original dataframe
 # Create a vector with the names of the attributes you want to keep
-attributes_to_keep <- c("Temperature", "humidity", "pressure", "contrailPresent")
+attributes_to_keep <- c("Temperature", "humidity", "contrailPresent")
 # Use the subset function to keep only the specified attributes
 df_reduced <- subset(df, select = attributes_to_keep)
 # Print the column names of the reduced dataframe
 # Change the column name "Temperature" to "temperature"
 colnames(df_reduced)[colnames(df_reduced) == "Temperature"] <- "temperature"
+colnames(df_reduced)[colnames(df_reduced) == "contrailPresent"] <- "image"
 
 # Export atmospheric_prep to CSV file
 write_csv(df_reduced, "ground_weather_preprocessed.csv")
