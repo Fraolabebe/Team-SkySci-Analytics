@@ -52,15 +52,14 @@ SkyConditionData_cleaned <- SkyConditionData_cleaned %>%
     1,
     0
   ))
-
 }
 #===============================================================================
 # Append `contrailPresent` to atmospheric cleaned and rename to atmospheric_prep
 #===============================================================================
 # Convert the 'Datetime' column in SkyConditionData_cleaned to the same format 
 # as 'Timestamp' in cleaned_atmospheric
-SkyConditionData_cleaned$Datetime <- as.POSIXct(SkyConditionData_cleaned$Datetime, 
-                                                format = "%Y-%m-%d %H:%M:%S")
+SkyConditionData_cleaned$Datetime <- as.POSIXct(
+  SkyConditionData_cleaned$Datetime, format = "%Y-%m-%d %H:%M:%S")
 # Merge the 'contrailPresent' column based on matching timestamps
 atmospheric_prep <- cleaned_atmospheric %>%
   left_join(SkyConditionData_cleaned[c("Datetime", "contrailPresent")], 

@@ -89,6 +89,27 @@ model.stats <- list(
   Precision = precision
 )
 comparison.df <- rbind(comparison.df, model.stats)
+#-------------------------------------------------------------------------------
+# Create a dataframe with the actual and predicted values
+results <- data.frame(Actual = test_data$image, Predicted = model)
+
+# Confusion matrix plot
+confusion_matrix <- table(results$Actual, results$Predicted)
+
+# Relabel for confusion matrix
+plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                       100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+# Plot the confusion matrix
+ggplot() +
+  geom_tile(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+  geom_text(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+  labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+       title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  theme_minimal()
+#-------------------------------------------------------------------------------
 }
 #===============================================================================
 # Pressure Level 225 modeling
@@ -191,6 +212,28 @@ model.stats <- list(
   Precision = precision
 )
 comparison.df <- rbind(comparison.df, model.stats)
+
+#-------------------------------------------------------------------------------
+# Create a dataframe with the actual and predicted values
+results <- data.frame(Actual = test_data$image, Predicted = model)
+
+# Confusion matrix plot
+confusion_matrix <- table(results$Actual, results$Predicted)
+
+# Relabel for confusion matrix
+plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                       100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+# Plot the confusion matrix
+ggplot() +
+  geom_tile(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+  geom_text(data = as.data.frame.table(confusion_matrix),
+            aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+  labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+       title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  theme_minimal()
+#-------------------------------------------------------------------------------
 }
 #===============================================================================
 # Pressure Level 250 modeling
@@ -315,6 +358,29 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
     Precision = precision
   )
   comparison.df <- rbind(comparison.df, model.stats)
+  
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
 }
 #===============================================================================
 # Pressure Level 300 modeling
@@ -377,14 +443,38 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
     Precision = precision
   )
   comparison.df <- rbind(comparison.df, model.stats)
+  
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
 }
 #===============================================================================
-# All Pressure Levels modeling
+# All Pressure Levels modeling 200
 {
-  level <- 0
-  plot.subtitle <- "Atmospheric Weather Data (Level = 225mb and any contrail present)"
+  level <- 2000
+  level.modifier <- 200
+  plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
+  level.modifier, "mb and any contrail present)")
   df.all <- df %>%
-    filter(pressure == 225 | (pressure != 225 & image == 1))
+    filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
   
   df <- df.all %>% select(-pressure)
   
@@ -407,7 +497,7 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
   # Evaluate the model
   accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
   print(paste("Accuracy:", accuracy))
-  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
+  #plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
   #-----------------------------------------------------------------------------
   # Calculate the confusion matrix
   confusion_matrix <- table(model, test_data[[target_variable_column]])
@@ -442,6 +532,375 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
     Precision = precision
   )
   comparison.df <- rbind(comparison.df, model.stats)
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
+}
+# All Pressure Levels modeling 225
+{
+  level <- 2000
+  level.modifier <- 200
+  plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
+  level.modifier, "mb and any contrail present)")
+  df.all <- df %>%
+    filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
+  
+  df <- df.all %>% select(-pressure)
+  
+  # Split the dataset into predictors (X) and the target variable (y)
+  target_variable_column <- "image"
+  X <- select(df.all, -target_variable_column)
+  y <- df.all[[target_variable_column]]
+  # Split the dataset into training and testing sets
+  set.seed(123)
+  train_threshold <- 0.7 # 70% for training
+  train_indices <- sample(nrow(df.all), nrow(df.all) * train_threshold)  
+  train_data <- df.all[train_indices, ]
+  test_data <- df.all[-train_indices, ]
+  # Train the KNN classifier model
+  k <- 4   # Number of nearest neighbors to consider
+  model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
+               test_data[, -which(names(test_data) == target_variable_column)],
+               train_data[[target_variable_column]],
+               k)
+  # Evaluate the model
+  accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
+  print(paste("Accuracy:", accuracy))
+  #plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
+  #-----------------------------------------------------------------------------
+  # Calculate the confusion matrix
+  confusion_matrix <- table(model, test_data[[target_variable_column]])
+  # Calculate True Positive, True Negative, False Positive, and False Negative
+  tp <- confusion_matrix[2, 2]
+  tn <- confusion_matrix[1, 1]
+  fp <- confusion_matrix[1, 2]
+  fn <- confusion_matrix[2, 1]
+  # Calculate Sensitivity, Specificity, Precision, and Accuracy
+  sensitivity <- tp / (tp + fn)
+  specificity <- tn / (tn + fp)
+  precision <- tp / (tp + fp)
+  accuracy <- (tp + tn) / sum(confusion_matrix)
+  # Calculate the overall observed agreement
+  observed_agreement <- accuracy
+  # Calculate the probability of agreement by chance
+  p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
+                 sum(confusion_matrix[2,]) * sum(confusion_matrix[,2])) /
+    sum(confusion_matrix)^2
+  
+  kappa <- (observed_agreement - p_chance) / (1 - p_chance)
+  mcnemar_test <- mcnemar.test(confusion_matrix)
+  p_value_mcnemar <- mcnemar_test$p.value
+  
+  model.stats <- list(
+    Level = level,
+    Accuracy = accuracy,
+    Cohen_Kappa = kappa,
+    McNemars_Test_p_value = p_value_mcnemar,
+    Sensitivity = sensitivity,
+    Specificity = specificity,
+    Precision = precision
+  )
+  comparison.df <- rbind(comparison.df, model.stats)
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
+}
+# All Pressure Levels modeling 250
+{
+  level <- 2000
+  level.modifier <- 200
+  plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
+  level.modifier, "mb and any contrail present)")
+  df.all <- df %>%
+    filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
+  
+  df <- df.all %>% select(-pressure)
+  
+  # Split the dataset into predictors (X) and the target variable (y)
+  target_variable_column <- "image"
+  X <- select(df.all, -target_variable_column)
+  y <- df.all[[target_variable_column]]
+  # Split the dataset into training and testing sets
+  set.seed(123)
+  train_threshold <- 0.7 # 70% for training
+  train_indices <- sample(nrow(df.all), nrow(df.all) * train_threshold)  
+  train_data <- df.all[train_indices, ]
+  test_data <- df.all[-train_indices, ]
+  # Train the KNN classifier model
+  k <- 4   # Number of nearest neighbors to consider
+  model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
+               test_data[, -which(names(test_data) == target_variable_column)],
+               train_data[[target_variable_column]],
+               k)
+  # Evaluate the model
+  accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
+  print(paste("Accuracy:", accuracy))
+  #plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
+  #-----------------------------------------------------------------------------
+  # Calculate the confusion matrix
+  confusion_matrix <- table(model, test_data[[target_variable_column]])
+  # Calculate True Positive, True Negative, False Positive, and False Negative
+  tp <- confusion_matrix[2, 2]
+  tn <- confusion_matrix[1, 1]
+  fp <- confusion_matrix[1, 2]
+  fn <- confusion_matrix[2, 1]
+  # Calculate Sensitivity, Specificity, Precision, and Accuracy
+  sensitivity <- tp / (tp + fn)
+  specificity <- tn / (tn + fp)
+  precision <- tp / (tp + fp)
+  accuracy <- (tp + tn) / sum(confusion_matrix)
+  # Calculate the overall observed agreement
+  observed_agreement <- accuracy
+  # Calculate the probability of agreement by chance
+  p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
+                 sum(confusion_matrix[2,]) * sum(confusion_matrix[,2])) /
+    sum(confusion_matrix)^2
+  
+  kappa <- (observed_agreement - p_chance) / (1 - p_chance)
+  mcnemar_test <- mcnemar.test(confusion_matrix)
+  p_value_mcnemar <- mcnemar_test$p.value
+  
+  model.stats <- list(
+    Level = level,
+    Accuracy = accuracy,
+    Cohen_Kappa = kappa,
+    McNemars_Test_p_value = p_value_mcnemar,
+    Sensitivity = sensitivity,
+    Specificity = specificity,
+    Precision = precision
+  )
+  comparison.df <- rbind(comparison.df, model.stats)
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
+}
+# All Pressure Levels modeling 275
+{
+  level <- 2000
+  level.modifier <- 200
+  plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
+  level.modifier, "mb and any contrail present)")
+  df.all <- df %>%
+    filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
+  
+  df <- df.all %>% select(-pressure)
+  
+  # Split the dataset into predictors (X) and the target variable (y)
+  target_variable_column <- "image"
+  X <- select(df.all, -target_variable_column)
+  y <- df.all[[target_variable_column]]
+  # Split the dataset into training and testing sets
+  set.seed(123)
+  train_threshold <- 0.7 # 70% for training
+  train_indices <- sample(nrow(df.all), nrow(df.all) * train_threshold)  
+  train_data <- df.all[train_indices, ]
+  test_data <- df.all[-train_indices, ]
+  # Train the KNN classifier model
+  k <- 4   # Number of nearest neighbors to consider
+  model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
+               test_data[, -which(names(test_data) == target_variable_column)],
+               train_data[[target_variable_column]],
+               k)
+  # Evaluate the model
+  accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
+  print(paste("Accuracy:", accuracy))
+  #plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
+  #-----------------------------------------------------------------------------
+  # Calculate the confusion matrix
+  confusion_matrix <- table(model, test_data[[target_variable_column]])
+  # Calculate True Positive, True Negative, False Positive, and False Negative
+  tp <- confusion_matrix[2, 2]
+  tn <- confusion_matrix[1, 1]
+  fp <- confusion_matrix[1, 2]
+  fn <- confusion_matrix[2, 1]
+  # Calculate Sensitivity, Specificity, Precision, and Accuracy
+  sensitivity <- tp / (tp + fn)
+  specificity <- tn / (tn + fp)
+  precision <- tp / (tp + fp)
+  accuracy <- (tp + tn) / sum(confusion_matrix)
+  # Calculate the overall observed agreement
+  observed_agreement <- accuracy
+  # Calculate the probability of agreement by chance
+  p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
+                 sum(confusion_matrix[2,]) * sum(confusion_matrix[,2])) /
+    sum(confusion_matrix)^2
+  
+  kappa <- (observed_agreement - p_chance) / (1 - p_chance)
+  mcnemar_test <- mcnemar.test(confusion_matrix)
+  p_value_mcnemar <- mcnemar_test$p.value
+  
+  model.stats <- list(
+    Level = level,
+    Accuracy = accuracy,
+    Cohen_Kappa = kappa,
+    McNemars_Test_p_value = p_value_mcnemar,
+    Sensitivity = sensitivity,
+    Specificity = specificity,
+    Precision = precision
+  )
+  comparison.df <- rbind(comparison.df, model.stats)
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
+}
+# All Pressure Levels modeling 300
+{
+  level <- 2000
+  level.modifier <- 200
+  plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
+  level.modifier, "mb and any contrail present)")
+  df.all <- df %>%
+    filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
+  
+  df <- df.all %>% select(-pressure)
+  
+  # Split the dataset into predictors (X) and the target variable (y)
+  target_variable_column <- "image"
+  X <- select(df.all, -target_variable_column)
+  y <- df.all[[target_variable_column]]
+  # Split the dataset into training and testing sets
+  set.seed(123)
+  train_threshold <- 0.7 # 70% for training
+  train_indices <- sample(nrow(df.all), nrow(df.all) * train_threshold)  
+  train_data <- df.all[train_indices, ]
+  test_data <- df.all[-train_indices, ]
+  # Train the KNN classifier model
+  k <- 4   # Number of nearest neighbors to consider
+  model <- knn(train_data[, -which(names(train_data) == target_variable_column)],
+               test_data[, -which(names(test_data) == target_variable_column)],
+               train_data[[target_variable_column]],
+               k)
+  # Evaluate the model
+  accuracy <- sum(model == test_data[[target_variable_column]]) / nrow(test_data)
+  print(paste("Accuracy:", accuracy))
+  #plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ", 100*round(accuracy,4),'%')
+  #-----------------------------------------------------------------------------
+  # Calculate the confusion matrix
+  confusion_matrix <- table(model, test_data[[target_variable_column]])
+  # Calculate True Positive, True Negative, False Positive, and False Negative
+  tp <- confusion_matrix[2, 2]
+  tn <- confusion_matrix[1, 1]
+  fp <- confusion_matrix[1, 2]
+  fn <- confusion_matrix[2, 1]
+  # Calculate Sensitivity, Specificity, Precision, and Accuracy
+  sensitivity <- tp / (tp + fn)
+  specificity <- tn / (tn + fp)
+  precision <- tp / (tp + fp)
+  accuracy <- (tp + tn) / sum(confusion_matrix)
+  # Calculate the overall observed agreement
+  observed_agreement <- accuracy
+  # Calculate the probability of agreement by chance
+  p_chance <- (sum(confusion_matrix[1,]) * sum(confusion_matrix[,1]) +
+                 sum(confusion_matrix[2,]) * sum(confusion_matrix[,2])) /
+    sum(confusion_matrix)^2
+  
+  kappa <- (observed_agreement - p_chance) / (1 - p_chance)
+  mcnemar_test <- mcnemar.test(confusion_matrix)
+  p_value_mcnemar <- mcnemar_test$p.value
+  
+  model.stats <- list(
+    Level = level,
+    Accuracy = accuracy,
+    Cohen_Kappa = kappa,
+    McNemars_Test_p_value = p_value_mcnemar,
+    Sensitivity = sensitivity,
+    Specificity = specificity,
+    Precision = precision
+  )
+  comparison.df <- rbind(comparison.df, model.stats)
+  #-------------------------------------------------------------------------------
+  # Create a dataframe with the actual and predicted values
+  results <- data.frame(Actual = test_data$image, Predicted = model)
+  
+  # Confusion matrix plot
+  confusion_matrix <- table(results$Actual, results$Predicted)
+  
+  # Relabel for confusion matrix
+  plot.subtitle <- paste(plot.subtitle, " [", k, " Clusters]  Accuracy ",
+                         100*round(accuracy,4),'% | Kappa ', round(kappa,4))
+  # Plot the confusion matrix
+  ggplot() +
+    geom_tile(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, fill = Freq), color = "black") +
+    geom_text(data = as.data.frame.table(confusion_matrix),
+              aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
+    labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+         title = "Confusion Matrix - KNN Model", subtitle = plot.subtitle) +
+    scale_fill_gradient(low = "white", high = "forestgreen") +
+    theme_minimal()
+  #-------------------------------------------------------------------------------
 }
 #===============================================================================
 # Export the dataframe for analysis
@@ -459,7 +918,7 @@ ggplot(comparison.df, aes(x = as.factor(Level), y = Accuracy)) +
        y = "Score")
 
 #-------------------------------------------------------------------------------
-ggplot(comparison.df, aes(x = as.factor(Level), y = kappa)) +
+ggplot(comparison.df, aes(x = as.factor(Level), y = Cohen_Kappa)) +
   geom_bar(stat = "identity", fill = "blue", alpha = 0.8) +
   labs(title = "Cohen's Kappa by Level",
        x = "Level",
