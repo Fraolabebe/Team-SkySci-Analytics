@@ -22,11 +22,17 @@ print(paste("Current Working Directory: ",getwd()), sep="\n")
 # plot.subtitle <- "Ground Weather Data"
 
 df <- read_csv("atmospheric_weather_preprocessed.csv")
-plot.subtitle <- "Atmospheric Weather Data (20KM)"
+#plot.subtitle <- "Atmospheric Weather Data (20KM)"
 #===============================================================================
+# Incorporate more success data
+level.modifier <- 225
+df.all <- df %>%
+  filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
 
-
-
+df <- df.all %>% select(-pressure)
+plot.subtitle <- paste("Atmospheric Weather Data (", 
+                       level.modifier, "mb boosted)")
+#===============================================================================
 
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
@@ -79,7 +85,8 @@ ggplot() +
             aes(x = Var1, y = Var2, fill = Freq), color = "black") +
   geom_text(data = as.data.frame.table(confusion_matrix),
             aes(x = Var1, y = Var2, label = Freq), color = "black", size = 12) +
-  labs(x = "Actual", y = "Predicted", fill = "Frequency", title = "Confusion Matrix - SVM Model") +
+  labs(x = "Actual", y = "Predicted", fill = "Frequency", 
+       title = "Confusion Matrix - SVM Model", subtitle = plot.subtitle) +
   scale_fill_gradient(low = "white", high = "forestgreen") +
   theme_minimal()
 

@@ -556,8 +556,8 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
 }
 # All Pressure Levels modeling 225
 {
-  level <- 2000
-  level.modifier <- 200
+  level <- 2250
+  level.modifier <- 225
   plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
   level.modifier, "mb and any contrail present)")
   df.all <- df %>%
@@ -643,8 +643,8 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
 }
 # All Pressure Levels modeling 250
 {
-  level <- 2000
-  level.modifier <- 200
+  level <- 2500
+  level.modifier <- 250
   plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
   level.modifier, "mb and any contrail present)")
   df.all <- df %>%
@@ -730,8 +730,8 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
 }
 # All Pressure Levels modeling 275
 {
-  level <- 2000
-  level.modifier <- 200
+  level <- 2750
+  level.modifier <- 275
   plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
   level.modifier, "mb and any contrail present)")
   df.all <- df %>%
@@ -817,8 +817,8 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
 }
 # All Pressure Levels modeling 300
 {
-  level <- 2000
-  level.modifier <- 200
+  level <- 3000
+  level.modifier <- 300
   plot.subtitle <- paste("Atmospheric Weather Data (Level = ",
   level.modifier, "mb and any contrail present)")
   df.all <- df %>%
@@ -903,6 +903,7 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
   #-------------------------------------------------------------------------------
 }
 #===============================================================================
+
 # Export the dataframe for analysis
 comparison.df
 # Export the dataframe to a CSV file named 'comparison.csv'
@@ -910,19 +911,19 @@ write.csv(comparison.df, file = "model_comparison.csv", row.names = FALSE)
 #===============================================================================
 #Visualize model differences
 
-ggplot(comparison.df, aes(x = as.factor(Level), y = Accuracy)) +
-  geom_bar(stat = "identity", fill = "blue", alpha = 0.6) +
-  geom_bar(stat = "identity", fill = "red", alpha = 0.6) +
-  labs(title = "Accuracy by Level",
-       x = "Level",
-       y = "Score")
+# ggplot(comparison.df, aes(x = as.factor(Level), y = Accuracy)) +
+#   geom_bar(stat = "identity", fill = "blue", alpha = 0.6) +
+#   geom_bar(stat = "identity", fill = "red", alpha = 0.6) +
+#   labs(title = "Accuracy by Level",
+#        x = "Level",
+#        y = "Score")
 
 #-------------------------------------------------------------------------------
-ggplot(comparison.df, aes(x = as.factor(Level), y = Cohen_Kappa)) +
-  geom_bar(stat = "identity", fill = "blue", alpha = 0.8) +
-  labs(title = "Cohen's Kappa by Level",
-       x = "Level",
-       y = "Score")
+# ggplot(comparison.df, aes(x = as.factor(Level), y = Cohen_Kappa)) +
+#   geom_bar(stat = "identity", fill = "blue", alpha = 0.8) +
+#   labs(title = "Cohen's Kappa by Level",
+#        x = "Level",
+#        y = "Score")
 
 #-------------------------------------------------------------------------------
 # Create a ggplot barplot with a legend
