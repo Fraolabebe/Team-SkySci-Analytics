@@ -1,0 +1,121 @@
+Programming Language,Filename,Module/Import
+R,.\Atmospheric Data Scraper\RNomads_Extraction.R,rNOMADS
+R,.\Data Visualizations\contrail_formation_questions.R,tidyr
+R,.\Data Visualizations\contrail_formation_questions.R,dplyr
+R,.\Data Visualizations\contrail_formation_questions.R,class
+R,.\Data Visualizations\contrail_formation_questions.R,ggplot2
+R,.\Data Visualizations\contrail_formation_questions.R,readr
+R,.\Data Visualizations\visualize_atmospheric_data.R,tidyr
+R,.\Data Visualizations\visualize_atmospheric_data.R,dplyr
+R,.\Data Visualizations\visualize_atmospheric_data.R,class
+R,.\Data Visualizations\visualize_atmospheric_data.R,ggplot2
+R,.\Data Visualizations\visualize_atmospheric_data.R,readr
+R,.\Metadata Merge Transform\reconfigure\ground_weather_contrail_counts_cleaning.R,stringr
+R,.\Metadata Merge Transform\reconfigure\ground_weather_contrail_counts_cleaning.R,dplyr
+R,.\Metadata Merge Transform\reconfigure\ground_weather_contrail_counts_cleaning.R,readr
+R,.\Metadata Merge Transform\reconfigure\merge_contrail_counts_target.R,stringr
+R,.\Metadata Merge Transform\reconfigure\merge_contrail_counts_target.R,readr
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,cluster
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,factoextra
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,tidyr
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,pROC
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,dplyr
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,class
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,ggplot2
+R,.\ML Application and Analysis\ML atmospheric analysis\KNN.R,readr
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,tidyr
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,rms
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,caret
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,pROC
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,dplyr
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,ggplot2
+R,.\ML Application and Analysis\ML atmospheric analysis\Logistic_Regression.R,readr
+R,.\ML Application and Analysis\ML atmospheric analysis\ML_Preprocessing_Atmospheric.R,dplyr
+R,.\ML Application and Analysis\ML atmospheric analysis\ML_Preprocessing_Atmospheric.R,readr
+R,.\ML Application and Analysis\ML atmospheric analysis\ML_Preprocessing_Atmospheric.R,tidyr
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,tidyr
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,pROC
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,dplyr
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,ROCR
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,ggplot2
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,e1071
+R,.\ML Application and Analysis\ML atmospheric analysis\SVM.R,readr
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,cluster
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,factoextra
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,tidyr
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,pROC
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,dplyr
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,class
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,ggplot2
+R,.\ML Application and Analysis\ML groundweather analysis\KNN.R,readr
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,tidyr
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,rms
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,caret
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,pROC
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,dplyr
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,ggplot2
+R,.\ML Application and Analysis\ML groundweather analysis\Logistic_Regression.R,readr
+R,.\ML Application and Analysis\ML groundweather analysis\ML_Preprocessing_Groundweather.R,dplyr
+R,.\ML Application and Analysis\ML groundweather analysis\ML_Preprocessing_Groundweather.R,readr
+R,.\ML Application and Analysis\ML groundweather analysis\ML_Preprocessing_Groundweather.R,tidyr
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,tidyr
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,dplyr
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,ROCR
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,ggplot2
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,e1071
+R,.\ML Application and Analysis\ML groundweather analysis\SVM.R,readr
+R,.\ML Application and Analysis\ML model comparisons\KNN_pressure_comparisons.R,tidyr
+R,.\ML Application and Analysis\ML model comparisons\KNN_pressure_comparisons.R,dplyr
+R,.\ML Application and Analysis\ML model comparisons\KNN_pressure_comparisons.R,class
+R,.\ML Application and Analysis\ML model comparisons\KNN_pressure_comparisons.R,ggplot2
+R,.\ML Application and Analysis\ML model comparisons\KNN_pressure_comparisons.R,readr
+Python,.\citations_finder.py,csv
+Python,.\citations_finder.py,re
+Python,.\citations_finder.py,os
+Python,.\Atmospheric Data Scraper\csvValidation.py,re
+Python,.\Atmospheric Data Scraper\csvValidation.py,os
+Python,.\Atmospheric Data Scraper\csvValidation.py,datetime
+Python,.\Atmospheric Data Scraper\grb2csv_test.py,pygrib
+Python,.\Atmospheric Data Scraper\grb2csv_test.py,pandas as pd
+Python,.\Atmospheric Data Scraper\grb2csv_test.py,os
+Python,.\Atmospheric Data Scraper\grb2_to_csv.py,pandas as pd
+Python,.\Atmospheric Data Scraper\grb2_to_csv.py,pygrib
+Python,.\Atmospheric Data Scraper\grb_attribute_checker.py,pygrib
+Python,.\Atmospheric Data Scraper\grb_attribute_checker.py,os
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv.py,pygrib
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv.py,pandas as pd
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv.py,os
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv_original.py,pygrib
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv_original.py,pandas as pd
+Python,.\Atmospheric Data Scraper\master_grb2_to_csv_original.py,os
+Python,.\Atmospheric Data Scraper\mergeReduced.py,pandas as pd
+Python,.\Atmospheric Data Scraper\mergeReduced.py,os
+Python,.\Atmospheric Data Scraper\mergeReduced.py,datetime
+Python,.\Atmospheric Data Scraper\reduceCoords.py,sys
+Python,.\Atmospheric Data Scraper\reduceCoords.py,pandas as pd
+Python,.\Atmospheric Data Scraper\reduceCoords.py,os
+Python,.\Data Visualizations\reduceHumidity.py,pandas as pd
+Python,.\Ground Data Scraper\GroundWeatherExtract.py,bs4
+Python,.\Ground Data Scraper\GroundWeatherExtract.py,datetime
+Python,.\Ground Data Scraper\GroundWeatherExtract.py,pandas as pd
+Python,.\Ground Data Scraper\GroundWeatherExtract.py,requests
+Python,.\Ground Data Scraper\GroundWeatherExtract.py,json
+Python,.\Ground Data Scraper\testing\csv_validation.py,csv
+Python,.\Ground Data Scraper\testing\GroundWeatherDoppleganger.py,bs4
+Python,.\Ground Data Scraper\testing\GroundWeatherDoppleganger.py,datetime
+Python,.\Ground Data Scraper\testing\GroundWeatherDoppleganger.py,pandas as pd
+Python,.\Ground Data Scraper\testing\GroundWeatherDoppleganger.py,requests
+Python,.\Ground Data Scraper\testing\GroundWeatherDoppleganger.py,json
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,bs4
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,pandas as pd
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,datetime
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,requests
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,numpy as np
+Python,.\Ground Data Scraper\testing\GroundWeatherExtract.py,json
+Python,.\Metadata Cleanup\SkyConditionData_Transform.py,numpy as np
+Python,.\Metadata Cleanup\SkyConditionData_Transform.py,pandas as pd
+Python,.\Metadata Merge Transform\Merge_Metadata_Transform.py,pandas as pd
+Python,.\Metadata Merge Transform\Merge_Metadata_Transform.py,os
+Python,.\ML Application and Analysis\ML atmospheric analysis\Merge_Metadata_Transform_atmospheric.py,pandas as pd
+Python,.\ML Application and Analysis\ML atmospheric analysis\Merge_Metadata_Transform_atmospheric.py,os
+Python,.\Resources\csv_validation.py,csv
