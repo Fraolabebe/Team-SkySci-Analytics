@@ -6,6 +6,14 @@ library(class)
 library(ggplot2)
 
 #-------------------------------------------------------------------------------
+# Define a function to create and save the plots
+save_plot <- function(plot, filename) {
+  # Set the graphics device (png in this case)
+  png(filename)
+  print(plot)  # Print the plot to the graphics device
+  dev.off()   # Close the graphics device after saving the plot
+}
+#-------------------------------------------------------------------------------
 
 # NOTE: Set to your working directory
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
@@ -35,12 +43,14 @@ ggplot(df, aes(x = Timestamp, y = Humidity, color = as.factor(Level))) +
        title = title.var, subtitle = subtitle.var) +
   theme_minimal()
 
-ggplot(df, aes(x = Timestamp, y = Humidity, color = as.factor(Level))) +
+humidity_all_levels <- ggplot(df, aes(x = Timestamp, y = Humidity, color = as.factor(Level))) +
   geom_line() +  # Add lines for each level series
   geom_point(shape = NA) +  # Hide all scatter points
   labs(x = "Timestamp", y = "Relative Humidity (%)", color = "Level",
        title = title.var, subtitle = subtitle.var) +
   theme_minimal()
+
+humidity_all_levels
 }
 #-------------------------------------------------------------------------------
 {
@@ -465,3 +475,14 @@ monthly.color <- c("#fe443b","#ec50a5","#967fdc","#3c97d0")
 #===============================================================================
 # Misc. Visuals
 #===============================================================================
+# Humidity versus Temperature colored by Level
+{
+  title.var <- "Humidity versus Temperature by Level"
+  subtitle.var <- "NOAA RAP (20KM) Sept 1st 2022 - Dec 22nd 2022"
+  # Create the ggplot scatter plot
+  ggplot(df, aes(x = Temperature, y = Humidity, color = as.factor(Level))) +
+    geom_point() +
+    labs(x = "Temperature (K)", y = "Relative Humidity (%)", color = "Level",
+         title = title.var, subtitle = subtitle.var) +
+    theme_minimal()
+}
