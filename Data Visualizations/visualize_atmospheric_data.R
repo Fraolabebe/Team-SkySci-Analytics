@@ -486,3 +486,32 @@ monthly.color <- c("#fe443b","#ec50a5","#967fdc","#3c97d0")
          title = title.var, subtitle = subtitle.var) +
     theme_minimal()
 }
+
+#===============================================================================
+# Humidity versus Temperature colored by Level
+{
+  title.var <- "Humidity versus Temperature by Contrail Formed"
+  subtitle.var <- "NOAA RAP (20KM) Sept 1st 2022 - Dec 22nd 2022"
+  # Create the ggplot scatter plot
+  ggplot(df.new, aes(x = Temperature, y = RH_ice, color = as.factor(contrailPresent))) +
+    geom_point() +
+    labs(x = "Temperature (K)", y = "Relative Humidity (%)", color = "Level",
+         title = title.var, subtitle = subtitle.var) +
+    theme_minimal()
+}
+
+#===============================================================================
+# Ice Humidity versus Temperature colored by Level
+df.new <- read.csv("atmospheric_data_ice_humidity.csv")
+colnames(df.new)
+{
+  title.var <- "Ice Based Humidity versus Temperature by Level"
+  subtitle.var <- "NOAA RAP (20KM) Sept 1st 2022 - Dec 22nd 2022"
+  # Create the ggplot scatter plot
+  ggplot(df.new, aes(x = Temperature, y = RH_ice, color = as.factor(Level))) +
+    geom_point() +
+    labs(x = "Temperature (K)", y = "Ice Based Relative Humidity (%)", color = "Level",
+         title = title.var, subtitle = subtitle.var) +
+    theme_minimal()
+}
+

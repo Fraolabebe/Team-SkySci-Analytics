@@ -19,6 +19,7 @@ colnames(df)
 # Round the accuracy and kappa scores to three decimals
 df$Accuracy <- round(df$Accuracy, 3)
 df$Kappa <- round(df$Kappa, 3)
+df$PPV <- round(df$PPV, 3)
 
 # Sort the data based on descending Kappa values while maintaining the order of Accuracy
 library(dplyr)
@@ -27,14 +28,26 @@ df <- df %>%
 
 # Reshape the data in a tidy format
 library(tidyr)
-df_tidy <- df %>% pivot_longer(cols = c(Accuracy, Kappa), names_to = "Metric", values_to = "Score")
+df_tidy <- df %>% pivot_longer(cols = c(Accuracy, Kappa, PPV), names_to = "Metric", values_to = "Score")
 
 # Create the ggplot barplot without ordering the bars
+# ggplot(df_tidy, aes(x = Model, y = Score, fill = Metric)) +
+#   geom_bar(stat = "identity", position = "dodge", color="black", width = 0.7) +
+#   geom_text(aes(label = Score), position = position_dodge(width = 0.7), vjust = -0.5) +
+#   labs(x = "Model", y = "Scores", fill = "Metric",
+#        title="Cross Model Comparisons of Accuracy & Kappa Metrics",
+#        subtitle="Level=225mb boosted with Contrail Present Data") +
+#   scale_fill_manual(values = c("skyblue", "forestgreen"), labels = c("Accuracy", "Kappa")) +
+#   theme_minimal()
+
+
 ggplot(df_tidy, aes(x = Model, y = Score, fill = Metric)) +
-  geom_bar(stat = "identity", position = "dodge", color="black", width = 0.7) +
+  geom_bar(stat = "identity", position = "dodge", color = "black", width = 0.7) +
   geom_text(aes(label = Score), position = position_dodge(width = 0.7), vjust = -0.5) +
   labs(x = "Model", y = "Scores", fill = "Metric",
-       title="Cross Model Comparisons of Accuracy & Kappa Metrics",
-       subtitle="Level=225mb boosted with Contrail Present Data") +
-  scale_fill_manual(values = c("skyblue", "forestgreen"), labels = c("Accuracy", "Kappa")) +
+       title = "Cross Model Comparisons of Accuracy, Kappa, and PPV Metrics",
+       subtitle = "Level=225mb boosted with Contrail Present Data") +
+  scale_fill_manual(values = c("skyblue", "forestgreen", "coral"),
+                    labels = c("Accuracy", "Kappa", "PPV")) +
   theme_minimal()
+

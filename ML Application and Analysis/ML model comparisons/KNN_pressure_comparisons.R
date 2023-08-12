@@ -116,8 +116,8 @@ ggplot() +
 {
 level <- 225
 plot.subtitle <- "Atmospheric Weather Data (Level = 225mb)"
-df.225 <- df %>% select(-pressure)
 df.225 <- df %>% filter(pressure == 225)
+df.225 <- df %>% select(-pressure)
 # Split the dataset into predictors (X) and the target variable (y)
 target_variable_column <- "image"
 X <- select(df.225, -target_variable_column)
@@ -562,7 +562,6 @@ plot.subtitle <- "Atmospheric Weather Data (Level = 250mb)"
   level.modifier, "mb and any contrail present)")
   df.all <- df %>%
     filter(pressure == level.modifier | (pressure != level.modifier & image == 1))
-  
   df <- df.all %>% select(-pressure)
   
   # Split the dataset into predictors (X) and the target variable (y)
